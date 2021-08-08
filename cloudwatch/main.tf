@@ -24,7 +24,7 @@ EOF
 
 
 resource "aws_cloudwatch_metric_alarm" "billing_alarm" {
-  alarm_name          = "${var.app_name}_billing_alarm"
+  alarm_name          = "${var.app_name}_billing_alarm_test"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "EstimatedCharges"
