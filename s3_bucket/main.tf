@@ -1,7 +1,6 @@
 locals {
   base_tags = {
-    Envrionment = var.env
-    Terraform   = "true"
+    Envrionment = var.environment
     Name        = var.bucket
   }
 

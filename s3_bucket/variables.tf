@@ -1,4 +1,4 @@
-variable "env" {
+variable "environment" {
   description = "Environment resources is provisioned in."
   type        = string
 }
@@ -14,18 +14,6 @@ variable "create" {
   default     = true
 }
 
-variable "acl" {
-  description = "(Optional) The canned ACL to apply. Defaults to 'private'. Conflicts with `grant`"
-  type        = string
-  default     = "private"
-}
-
-variable "tags" {
-  description = "Aws resource tags"
-  type        = map
-  default     = null
-}
-
 variable "website" {
   description = "Map containing static web-site hosting or redirect configuration."
   type        = map(string)
@@ -35,23 +23,19 @@ variable "website" {
 variable "block_public_acls" {
   description = "Whether Amazon S3 should block public ACLs for this bucket."
   type        = bool
-  default     = false
 }
 
 variable "block_public_policy" {
   description = "Whether Amazon S3 should block public bucket policies for this bucket."
   type        = bool
-  default     = false
 }
 
 variable "ignore_public_acls" {
   description = "Whether Amazon S3 should ignore public ACLs for this bucket."
   type        = bool
-  default     = false
 }
 
 variable "restrict_public_buckets" {
   description = "Whether Amazon S3 should restrict public bucket policies for this bucket."
   type        = bool
-  default     = false
 }
