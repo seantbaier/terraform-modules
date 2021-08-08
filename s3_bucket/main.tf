@@ -4,7 +4,7 @@ locals {
     Name        = var.bucket
   }
 
-  tags = merge(local.base_tags, var.tags)
+  tags = local.base_tags
 }
 
 
