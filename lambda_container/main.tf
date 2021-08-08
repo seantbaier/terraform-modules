@@ -24,8 +24,9 @@ resource "aws_lambda_function" "this" {
   function_name = var.function_name
   timeout       = 300
   role          = aws_iam_role.this[0].arn
-  image_uri     = var.function_name
-  package_type  = "Image"
+  image_uri     = var.image_uri
+
+  package_type = "Image"
 
   tags = local.base_tags
 }
