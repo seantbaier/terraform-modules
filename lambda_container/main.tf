@@ -7,17 +7,15 @@ locals {
 }
 
 
+
 resource "aws_lambda_function" "this" {
   count = var.create ? 1 : 0
 
   function_name = var.function_name
-
-  timeout = 300
-
-  role = aws_iam_role.this[0].arn
-
-  image_uri    = var.image_uri
-  package_type = "Image"
+  timeout       = 300
+  role          = aws_iam_role.this[0].arn
+  image_uri     = data.terraform_remote_state.ecr.outputs.image_uri
+  package_type  = "Image"
 
   tags = local.base_tags
 }
