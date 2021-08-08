@@ -1,5 +1,9 @@
 data "aws_ecr_authorization_token" "token" {}
 
+locals {
+  image_tag = "latest"
+}
+
 resource "aws_ecr_repository" "this" {
   name                 = var.name
   image_tag_mutability = "MUTABLE"
@@ -21,7 +25,7 @@ provider "docker" {
 }
 
 resource "docker_registry_image" "this" {
-  name = var.image_name
+  name = "${aws_ecr_repository.this.repository_url}/${var.name}:${local.image_tag}"
 
   build {
     context    = "../context"
