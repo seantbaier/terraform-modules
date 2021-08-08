@@ -20,6 +20,11 @@ variable "website" {
   default     = {}
 }
 
+variable "acl" {
+  description = "Access control list"
+  type = string
+}
+
 variable "block_public_acls" {
   description = "Whether Amazon S3 should block public ACLs for this bucket."
   type        = bool
