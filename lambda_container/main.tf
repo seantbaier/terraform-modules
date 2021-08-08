@@ -1,4 +1,14 @@
+
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "this" {}
+
+data "aws_ecr_authorization_token" "token" {}
+
+
 locals {
+
+
   base_tags = {
     Name        = var.function_name
     Terraform   = "true"
@@ -14,7 +24,7 @@ resource "aws_lambda_function" "this" {
   function_name = var.function_name
   timeout       = 300
   role          = aws_iam_role.this[0].arn
-  image_uri     = data.terraform_remote_state.ecr.outputs.image_uri
+  image_uri     = var.function_name
   package_type  = "Image"
 
   tags = local.base_tags
@@ -39,4 +49,3 @@ resource "aws_iam_role" "this" {
   assume_role_policy  = data.aws_iam_policy_document.assume_role_policy[0].json
   managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
 }
-
