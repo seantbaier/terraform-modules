@@ -2,7 +2,7 @@ locals {
   base_tags = {
     Name        = var.function_name
     Terraform   = "true"
-    Environment = var.env
+    Environment = var.environment
   }
 }
 
