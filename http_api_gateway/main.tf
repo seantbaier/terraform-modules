@@ -1,46 +1,34 @@
 locals {
-  base_tags = {
-    Environment = var.env
-    Terraform   = true
-    App         = var.app_name
+  tags = {
+    Environment = var.environment
   }
-
-  tags = merge(local.base_tags, var.tags)
 }
 
 resource "aws_apigatewayv2_api" "this" {
-  count = var.create ? 1 : 0
-
   name          = var.name
-  protocol_type = var.protocol_type
+  protocol_type = "HTTP"
 
   tags = local.tags
 }
 
 resource "aws_apigatewayv2_integration" "this" {
-  count = var.create ? 1 : 0
-
-  api_id                 = aws_apigatewayv2_api.this[0].id
-  integration_type       = var.integration_type
-  integration_method     = var.integration_method
+  api_id                 = aws_apigatewayv2_api.this.id
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
   integration_uri        = var.integration_uri
-  payload_format_version = var.payload_format_version
+  payload_format_version = "2.0"
 }
 
 
 resource "aws_apigatewayv2_route" "proxy" {
-  count = var.create ? 1 : 0
-
-  api_id    = aws_apigatewayv2_api.this[0].id
+  api_id    = aws_apigatewayv2_api.this.id
   route_key = "ANY /{proxy+}"
 
-  target = "integrations/${aws_apigatewayv2_integration.this[0].id}"
+  target = "integrations/${aws_apigatewayv2_integration.this.id}"
 }
 
 resource "aws_apigatewayv2_stage" "this" {
-  count = var.create ? 1 : 0
-
-  api_id = aws_apigatewayv2_api.this[0].id
+  api_id = aws_apigatewayv2_api.this.id
   name   = "$default"
 
   auto_deploy = true
@@ -49,8 +37,6 @@ resource "aws_apigatewayv2_stage" "this" {
 }
 
 resource "aws_apigatewayv2_domain_name" "this" {
-  count = var.create ? 1 : 0
-
   domain_name = var.domain_name
 
   domain_name_configuration {
@@ -61,9 +47,7 @@ resource "aws_apigatewayv2_domain_name" "this" {
 }
 
 resource "aws_apigatewayv2_api_mapping" "this" {
-  count       = var.create ? 1 : 0
-
-  api_id      = aws_apigatewayv2_api.this[0].id
-  domain_name = aws_apigatewayv2_domain_name.this[0].id
-  stage       = aws_apigatewayv2_stage.this[0].id
+  api_id      = aws_apigatewayv2_api.this.id
+  domain_name = aws_apigatewayv2_domain_name.this.id
+  stage       = aws_apigatewayv2_stage.this.id
 }
