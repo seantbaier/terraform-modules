@@ -1,4 +1,4 @@
-variable "certificate_arn" {
+variable "aws_acm_certificate_arn" {
   description = "AWS ACM Certifcate ARN"
   type = string
 }
