@@ -41,7 +41,7 @@ variable "validation_method" {
 variable "domain_validation_options" {
   description = "Domain validation options from AWS ACM Certificate"
   type        = map
-  default     = {}
+  default     = list(any)
 }
 
 variable "dns_ttl" {
