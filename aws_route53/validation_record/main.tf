@@ -10,15 +10,18 @@ locals {
 
 
 resource "aws_route53_record" "this" {
-  count = var.create && var.validation_method == "DNS" ? length(local.distinct_domain_names) : 0
+  for_each = {
+    for dvo in var.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
 
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
   zone_id         = var.zone_id
-  name            = element(local.validation_domains, count.index)["resource_record_name"]
-  type            = element(local.validation_domains, count.index)["resource_record_type"]
-  ttl             = var.dns_ttl
   allow_overwrite = true
-
-  records = [
-    element(local.validation_domains, count.index)["resource_record_value"]
-  ]
 }
