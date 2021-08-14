@@ -17,3 +17,7 @@ variable "app_name" {
   description = "Application/project name."
   type        = string
 }
+variable "subject_alternative_names" {
+  description = "List of alternative sub domains to be validated against."
+  type        = list(any)
+}
