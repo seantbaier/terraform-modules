@@ -26,6 +26,12 @@ variable "alias_name" {
   default = null
 }
 
+variable "is_alias" {
+  description = "Bool for if this is an alias record"
+  type = bool
+  default = false
+}
+
 
 variable "subject_alternative_names" {
   description = "List of alternative sub domains to be validated against."
