@@ -11,7 +11,8 @@ variable "domain_name" {
 
 variable "alias_zone_id" {
   description = "The Amazon Route 53 Hosted Zone ID of the endpoint. (Computed from aws_apigatewayv2_api)"
-  value       = string
+  type       = string
+  default = null
 }
 
 variable "zone_id" {
@@ -21,15 +22,10 @@ variable "zone_id" {
 
 variable "alias_name" {
   description = "The Amazon Route 53 Hosted Zone ID of the endpoint. (Computed from aws_apigatewayv2_api)"
-  value       = string
+  type     = string
   default = null
 }
 
-variable "alias_name" {
-  description = "The target domain name. (Computed from aws_apigatewayv2_api)"
-  value       = string
-  default = null
-}
 
 variable "subject_alternative_names" {
   description = "List of alternative sub domains to be validated against."
