@@ -6,13 +6,6 @@ locals {
 
   # Copy domain_validation_options for the distinct domain names
   validation_domains = var.create ? [for k, v in var.domain_validation_options : tomap(v) if contains(local.distinct_domain_names, replace(v.domain_name, "*.", ""))] : []
-
-
-  alias = {
-    name                   = var.alias_name
-    zone_id                = var.alias_zone_id
-    evaluate_target_health = false
-  }
 }
 
 
@@ -29,5 +22,10 @@ resource "aws_route53_record" "this" {
     element(local.validation_domains, count.index)["resource_record_value"]
   ]
 
-  alias = var.is_alias ? null : local.alias
+  
+  alias = {
+    name                   = var.is_alias ? var.alias_name : null
+    zone_id                = var.is_alias ? var.alias_zone_id : null
+    evaluate_target_health = var..is_alias ? false : null
+  }
 }
