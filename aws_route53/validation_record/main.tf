@@ -10,7 +10,7 @@ locals {
 
 
 resource "aws_route53_record" "this" {
-  count = var.create && var.validation_method == "DNS" && var.validate_certificate ? length(local.distinct_domain_names) : 0
+  count = var.create && var.validation_method == "DNS" ? length(local.distinct_domain_names) : 0
 
   zone_id         = var.zone_id
   name            = element(local.validation_domains, count.index)["resource_record_name"]
@@ -21,11 +21,4 @@ resource "aws_route53_record" "this" {
   records = [
     element(local.validation_domains, count.index)["resource_record_value"]
   ]
-
-  
-  alias {
-    name                   = var.is_alias ? var.alias_name : null
-    zone_id                = var.is_alias ? var.alias_zone_id : null
-    evaluate_target_health = var.is_alias ? false : null
-  }
 }

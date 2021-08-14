@@ -9,27 +9,9 @@ variable "domain_name" {
   type        = string
 }
 
-variable "alias_zone_id" {
-  description = "The Amazon Route 53 Hosted Zone ID of the endpoint. (Computed from aws_apigatewayv2_api)"
-  type       = string
-  default = null
-}
-
 variable "zone_id" {
   description = "Route53 hosted zone_id"
   type        = string
-}
-
-variable "alias_name" {
-  description = "The Amazon Route 53 Hosted Zone ID of the endpoint. (Computed from aws_apigatewayv2_api)"
-  type     = string
-  default = null
-}
-
-variable "is_alias" {
-  description = "Bool for if this is an alias record"
-  type = bool
-  default = false
 }
 
 
@@ -54,9 +36,4 @@ variable "dns_ttl" {
   description = "dns time to live"
   type        = number
   default = 60
-}
-
-variable "validate_certificate" {
-  description = "Request validation."
-  type        = bool
 }
