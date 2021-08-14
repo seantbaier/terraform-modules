@@ -40,7 +40,7 @@ variable "validation_method" {
 
 variable "domain_validation_options" {
   description = "Domain validation options from AWS ACM Certificate"
-  type        = map(any)
+  type        = map
   default     = {}
 }
 
