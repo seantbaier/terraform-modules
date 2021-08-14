@@ -1,4 +1,3 @@
-
 locals {
   # Get distinct list of domains and SANs
   distinct_domain_names = distinct(
@@ -6,16 +5,14 @@ locals {
   )
 
   # Copy domain_validation_options for the distinct domain names
-  validation_domains = [for k, v in aws_acm_certificate.this.domain_validation_options : tomap(v) if contains(local.distinct_domain_names, replace(v.domain_name, "*.", ""))]
+  validation_domains = var.create ? [for k, v in aws_acm_certificate.this[0].domain_validation_options : tomap(v) if contains(local.distinct_domain_names, replace(v.domain_name, "*.", ""))] : []
 
-  domain_name              = var.domain_name
-  subject_alternative_name = "*.${var.domain_name}"
-
-  tags = {
-    App         = var.app_name
-    Terraform   = true
-    Environment = var.environment
+  base_tags = {
+    App       = var.app_name
+    Terraform = true
   }
+
+  tags = merge(local.base_tags, var.tags)
 }
 
 
@@ -28,10 +25,13 @@ resource "aws_route53_zone" "this" {
   }
 }
 
+
 resource "aws_acm_certificate" "this" {
-  domain_name               = local.domain_name
-  subject_alternative_names = [local.subject_alternative_name]
-  validation_method         = "DNS"
+  count = var.create ? 1 : 0
+
+  domain_name               = var.domain_name
+  subject_alternative_names = var.subject_alternative_names
+  validation_method         = var.validation_method
 
   tags = local.tags
 
@@ -41,20 +41,24 @@ resource "aws_acm_certificate" "this" {
 }
 
 resource "aws_route53_record" "validation" {
+  count = var.create && var.validation_method == "DNS" && var.validate_certificate ? length(local.distinct_domain_names) : 0
+
   zone_id         = aws_route53_zone.this.zone_id
-  name            = local.validation_domains["resource_record_name"]
-  type            = local.validation_domains["resource_record_type"]
-  ttl             = 60
+  name            = element(local.validation_domains, count.index)["resource_record_name"]
+  type            = element(local.validation_domains, count.index)["resource_record_type"]
+  ttl             = var.dns_ttl
   allow_overwrite = true
 
   records = [
-    local.validation_domains["resource_record_value"]
+    element(local.validation_domains, count.index)["resource_record_value"]
   ]
 
   depends_on = [aws_acm_certificate.this]
 }
 
 resource "aws_acm_certificate_validation" "this" {
-  certificate_arn         = aws_acm_certificate.this.arn
+  count = var.create && var.validation_method == "DNS" && var.validate_certificate && var.wait_for_validation ? 1 : 0
+
+  certificate_arn         = aws_acm_certificate.this[0].arn
   validation_record_fqdns = aws_route53_record.validation.*.fqdn
 }
