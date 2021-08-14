@@ -41,3 +41,14 @@ variable "validation_method" {
 variable "domain_validation_options" {
   description = "Domain validation options from AWS ACM Certificate"
 }
+
+variable "dns_ttl" {
+  description = "dns time to live"
+  type        = number
+  default = 60
+}
+
+variable "validate_certificate" {
+  description = "Request validation."
+  type        = bool
+}
