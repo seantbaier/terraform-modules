@@ -23,7 +23,7 @@ resource "aws_route53_record" "this" {
   ]
 
   
-  alias = {
+  alias {
     name                   = var.is_alias ? var.alias_name : null
     zone_id                = var.is_alias ? var.alias_zone_id : null
     evaluate_target_health = var.is_alias ? false : null
