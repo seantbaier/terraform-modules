@@ -16,30 +16,6 @@ locals {
 }
 
 
-resource "aws_route53_zone" "this" {
-  name = var.name
-
-  tags = {
-    Environment = var.environment
-    Name        = var.name
-  }
-}
-
-
-resource "aws_acm_certificate" "this" {
-  count = var.create ? 1 : 0
-
-  domain_name               = var.domain_name
-  subject_alternative_names = var.subject_alternative_names
-  validation_method         = var.validation_method
-
-  tags = local.tags
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
 resource "aws_route53_record" "validation" {
   count = var.create && var.validation_method == "DNS" && var.validate_certificate ? length(local.distinct_domain_names) : 0
 
@@ -56,9 +32,26 @@ resource "aws_route53_record" "validation" {
   depends_on = [aws_acm_certificate.this]
 }
 
-resource "aws_acm_certificate_validation" "this" {
-  count = var.create && var.validation_method == "DNS" && var.validate_certificate && var.wait_for_validation ? 1 : 0
+resource "aws_route53_record" "ipv4" {
+  name    = module.aws_apigatewayv2_api.custom_domain_name
+  type    = "A"
+  zone_id = var.route53_hosted_zone_id
 
-  certificate_arn         = aws_acm_certificate.this[0].arn
-  validation_record_fqdns = aws_route53_record.validation.*.fqdn
+  alias {
+    name                   = module.aws_apigatewayv2_api.target_domain_name
+    zone_id                = module.aws_apigatewayv2_api.domain_name_hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "ipv6" {
+  name    = module.aws_apigatewayv2_api.custom_domain_name
+  type    = "AAAA"
+  zone_id = var.route53_hosted_zone_id
+
+  alias {
+    name                   = module.aws_apigatewayv2_api.target_domain_name
+    zone_id                = module.aws_apigatewayv2_api.domain_name_hosted_zone_id
+    evaluate_target_health = false
+  }
 }

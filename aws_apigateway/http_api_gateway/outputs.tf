@@ -13,8 +13,3 @@ output "domain_name_hosted_zone_id" {
   value       = aws_apigatewayv2_domain_name.this[0].domain_name_configuration[0].hosted_zone_id
 }
 
-output "custom_domain_name" {
-  description = "(Required) The domain name. Must be between 1 and 512 characters in length."
-  value       = aws_apigatewayv2_domain_name.this[0].domain_name
-
-}

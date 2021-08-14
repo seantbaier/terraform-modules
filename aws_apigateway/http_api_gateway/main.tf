@@ -1,14 +1,10 @@
-locals {
-  tags = {
-    Environment = var.environment
-  }
-}
-
 resource "aws_apigatewayv2_api" "this" {
   name          = var.name
   protocol_type = "HTTP"
 
-  tags = local.tags
+  tags = {
+    Environment = var.environment
+  }
 }
 
 resource "aws_apigatewayv2_integration" "this" {
@@ -33,7 +29,9 @@ resource "aws_apigatewayv2_stage" "this" {
 
   auto_deploy = true
 
-  tags = local.tags
+  tags = {
+    Environment = var.environment
+  }
 }
 
 resource "aws_apigatewayv2_domain_name" "this" {

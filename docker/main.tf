@@ -9,17 +9,6 @@ locals {
   repository_address = "${data.aws_caller_identity.this.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
 }
 
-resource "aws_ecr_repository" "this" {
-  name                 = var.name
-  image_tag_mutability = "MUTABLE"
-
-  tags = {
-    Name        = var.name
-    Terraform   = "true"
-    Environment = var.environment
-  }
-}
-
 
 provider "docker" {
   registry_auth {

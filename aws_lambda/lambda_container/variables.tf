@@ -3,11 +3,6 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
-variable "create" {
-  description = "Create resource or not."
-  type        = bool
-  default     = true
-}
 
 variable "function_name" {
   description = "Name of function"
