@@ -5,10 +5,10 @@ output "execution_arn" {
 
 output "aws_apigatewayv2_stage_id" {
   description = "API Gateway Stage Id for the aws_apigatewayv2_api_mapping"
-  value = aws_apigatewayv2_stage.id
+  value = aws_apigatewayv2_stage.this.id
 }
 
 output "id" {
   description = "API Gateway Id"
-  value = aws_apigatewayv2_api.id
+  value = aws_apigatewayv2_api.this.id
 }
