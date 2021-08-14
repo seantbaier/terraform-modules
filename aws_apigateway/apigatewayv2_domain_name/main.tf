@@ -9,7 +9,7 @@ resource "aws_apigatewayv2_domain_name" "this" {
 }
 
 resource "aws_apigatewayv2_api_mapping" "this" {
-  api_id      = var.aws_apigatewayv2_api_id
+  api_id      = var.api_id
   domain_name = aws_apigatewayv2_domain_name.this.id
   stage       = var.aws_apigatewayv2_stage_id
 }
