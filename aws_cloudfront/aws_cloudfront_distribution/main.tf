@@ -1,12 +1,12 @@
 locals {
   base_tags = {
-    Environment = var.env
+    Environment = var.environment
     App         = var.app_name
   }
 
   tags = merge(local.base_tags, var.tags)
 
-  origin_id = "${var.env}-${var.app_name}_origin_id"
+  origin_id = "${var.environment}-${var.app_name}_origin_id"
 }
 
 resource "aws_cloudfront_origin_access_identity" "this" {

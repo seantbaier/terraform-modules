@@ -4,7 +4,7 @@ variable "create" {
   default     = true
 }
 
-variable "env" {
+variable "environment" {
   description = "Environment the resource is provisioned in."
   type        = string
 }
