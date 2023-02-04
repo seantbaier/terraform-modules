@@ -9,12 +9,6 @@ variable "app_name" {
   type        = string
 }
 
-
-variable "environment" {
-  description = "Name of the environment the resource is provisioned in"
-  type        = string
-}
-
 variable "validate_certificate" {
   description = "Whether to validate certificate by creating Route53 record"
   type        = bool
