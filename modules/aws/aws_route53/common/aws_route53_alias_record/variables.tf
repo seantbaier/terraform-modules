@@ -1,3 +1,9 @@
+variable "create" {
+  description = "Create resource"
+  type        = bool
+  default     = true
+}
+
 variable "record_enabled" {
   type        = bool
   default     = true
@@ -12,7 +18,7 @@ variable "type" {
 
 variable "ttl" {
   type        = string
-  default     = "300"
+  default     = ""
   description = "(Required for non-alias records) The TTL of the record."
 }
 
@@ -38,6 +44,12 @@ variable "health_check_id" {
   type        = string
   default     = ""
   description = "The health check the record should be associated with."
+}
+
+variable "alias" {
+  type        = map(any)
+  default     = {}
+  description = "An alias block. Conflicts with ttl & records. Alias record documented below."
 }
 
 variable "multivalue_answer_routing_policy" {
