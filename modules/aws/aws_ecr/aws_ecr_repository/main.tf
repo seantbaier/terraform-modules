@@ -3,7 +3,7 @@ resource "aws_ecr_repository" "this" {
   image_tag_mutability = "MUTABLE"
 
   tags = {
-    App        = var.name
+    App         = var.name
     Terraform   = true
     Environment = var.environment
   }
