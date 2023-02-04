@@ -1,5 +1,6 @@
 resource "aws_route53_record" "this" {
-  count                            = var.record_enabled ? 1 : 0
+  count = var.record_enabled ? 1 : 0
+
   zone_id                          = var.zone_id
   name                             = var.name
   type                             = var.type
