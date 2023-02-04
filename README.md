@@ -1,3 +1,3 @@
 # Infrastructure Modules
 
-These are the Terraform modules. For actual infrastructure implementation see repo: [https://github.com/studiosauce/studiosauce-infrastructure](https://github.com/studiosauce/studiosauce-infrastructure)
+A lot of these modules are not generic. This repo is a wip.
