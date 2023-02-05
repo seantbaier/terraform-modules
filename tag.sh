@@ -1,7 +1,7 @@
 #! bash
 
 
-VERSION=v0.0.6
+VERSION=v0.0.7
 
 git add .
 git commit -m "Initial setup"
